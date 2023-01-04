@@ -1,6 +1,7 @@
 # ProximoCodeTask
 
 Hosted on Azure: https://proximocodetask.azurewebsites.net
+
 Notion Page: https://exclusive-balance-d69.notion.site/Proximo-Coding-Task-Notes-5485536e4e8e4ffea7b7ab42a9fc7199 
 
 
