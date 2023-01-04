@@ -28,12 +28,5 @@ I initially planned to add functionality to allow for multiple Phone Numbers and
 - Contacts/People Table and classes
 - Ability to add more than one phone number and email address
 - Create Custom Validators
-- Create a single interface for all future classes inside Data Access Library (as shown below). Would use a generic type so that it can be flexible
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/484e0853-a383-4af4-a7a4-2c4b6e102fb5/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5ed215c6-67b6-4bcc-9e68-6bccb4456116/Untitled.png)
-
-Screenshots taken from another project I’m working on
-
+- Create a single interface for all future classes inside Data Access Library (as shown in Notion). Would use a generic type so that it can be flexible
 - Add unit tests
