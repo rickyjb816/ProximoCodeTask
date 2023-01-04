@@ -1,0 +1,18 @@
+﻿<div class="card">
+    <NavLink @onclick="() => isExpanded = !isExpanded"><h5>@Title <span class="@(isExpanded ? "oi oi-chevron-bottom" : "oi oi-chevron-left")"></span></h5></NavLink>
+    @if (isExpanded)
+    {
+        @ChildContent
+    }
+</div>
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool isExpanded { get; set; } = true;
+
+}

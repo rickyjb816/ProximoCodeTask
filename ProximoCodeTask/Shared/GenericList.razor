@@ -1,0 +1,26 @@
+﻿@typeparam TItem
+
+@if(items is null)
+{
+    <p><em>Loading...</em></p>
+}
+else if(items.Count() == 0)
+{
+    <p><em>No Records in Database</em></p>
+}
+else
+{
+    <p hidden="@HideTotalItems">Total Number of Records: @items.Count()</p>
+    @ChildContent
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<TItem> items { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool HideTotalItems { get; set; } = true;
+}

@@ -1,0 +1,13 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Index</PageTitle>
+
+<h1>Proximo Code Task</h1>
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        NavigationManager.NavigateTo("/companies");
+    }
+}

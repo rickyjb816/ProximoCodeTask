@@ -1,0 +1,56 @@
+﻿@using DataAccessLibrary.Business
+@inject ICompany _db
+
+<InputSelect @bind-Value="SelectedValue">
+    @foreach (DataAccessLibrary.Data.Company option in options)
+    {
+        <option>@option.Name</option>
+    }
+</InputSelect>
+
+@code {
+    string? _SelectedValue { get; set; }
+
+    [Parameter]
+    public string? SelectedValue
+    {
+        get => _SelectedValue;
+        set
+        {
+            _SelectedValue = value;
+            ID = getID();
+            IDChanged.InvokeAsync(ID);
+        }
+    }
+
+    [Parameter]
+    public int ID { get; set; }
+
+    [Parameter]
+    public EventCallback<int> IDChanged { get; set; }
+
+    private IEnumerable<DataAccessLibrary.Data.Company> options = Enumerable.Empty<DataAccessLibrary.Data.Company>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        options = await _db.RetrieveCompanyNames();
+        InitialiseSelectedValue();
+    }
+
+    public int getID() => options.Where(option => (option.Name == SelectedValue)).First().ID;
+
+    public string? getNameByID() => options.Where(option => (option.ID == ID)).First().Name;
+
+
+    private void InitialiseSelectedValue()
+    {
+        if (ID > 0)
+        {
+            SelectedValue = getNameByID();
+        }
+        else
+        {
+            SelectedValue = options.FirstOrDefault().Name;
+        }
+    }
+}

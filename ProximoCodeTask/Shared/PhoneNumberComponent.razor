@@ -1,0 +1,20 @@
+﻿@for (int i = 0; i < PhoneNumbers.Count(); i++)
+{
+    <PhoneNumberInputComponent @bind-numbers="PhoneNumbers" @bind-index="i"/>
+    <br />
+}
+<br/>
+<button class="btn btn-primary" type="button" onclick="@btnAdd_OnClick"><span class="oi oi-plus" aria-hidden="true"></span></button>
+@code {
+    [Parameter]
+    public List<DataAccessLibrary.Data.PhoneNumber> PhoneNumbers { get; set; }
+
+    [Parameter]
+    public EventCallback<List<DataAccessLibrary.Data.PhoneNumber>> PhoneNumbersChanged { get; set; }
+
+    private async Task btnAdd_OnClick()
+    {
+        PhoneNumbers.Add(new DataAccessLibrary.Data.PhoneNumber());
+        await PhoneNumbersChanged.InvokeAsync(PhoneNumbers);
+    }
+}

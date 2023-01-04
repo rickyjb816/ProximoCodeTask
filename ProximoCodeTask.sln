@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProximoCodeTask", "ProximoCodeTask\ProximoCodeTask.csproj", "{5F770039-2BB5-4970-B5E9-AAB4AFCD42E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{DA5E927C-7FFC-4CDE-9F91-506D8FC85D67}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F770039-2BB5-4970-B5E9-AAB4AFCD42E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F770039-2BB5-4970-B5E9-AAB4AFCD42E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F770039-2BB5-4970-B5E9-AAB4AFCD42E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F770039-2BB5-4970-B5E9-AAB4AFCD42E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5E927C-7FFC-4CDE-9F91-506D8FC85D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5E927C-7FFC-4CDE-9F91-506D8FC85D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5E927C-7FFC-4CDE-9F91-506D8FC85D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5E927C-7FFC-4CDE-9F91-506D8FC85D67}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {806A9002-09B8-4632-9B3E-7495F43A1511}
+	EndGlobalSection
+EndGlobal

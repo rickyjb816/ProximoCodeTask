@@ -1,0 +1,57 @@
+﻿@page "/companies/view/{companyID:int}"
+@inject DataAccessLibrary.Business.ICompany _Company
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<PageTitle>View Company</PageTitle>
+
+<button aria-label="Click this button to go back to the previous page" id="btnBack" class="btn btn-primary" onclick="@btnBack_OnClick"><span class="oi oi-arrow-left" aria-hidden="true"></span> Back</button>
+<button aria-label="Click this button to edit the company" id="btnEdit" class="btn btn-primary" onclick="@(() => btnEdit_OnClick(companyID))">Edit</button>
+<button aria-label="Click this button to delete the company" id="btnDelete" class="btn btn-primary red" onclick="@(() => btnDelete_OnClick(companyID))">Delete</button>
+
+<h3>View Company</h3>
+
+<p aria-label="This field displays the Company Name. The Name is @company.Name">Name: @company.Name</p>
+<p aria-label="This field displays the Company Phone Number. The phone number is @company.PhoneNumber">Phone Number: @company.PhoneNumber</p>
+<p aria-label="This field displays the Company Email Address. The email address is @company.EmailAddress">Email Address: @company.EmailAddress</p>
+
+<h5>Address</h5>
+<p aria-label="This field displays the Address Line 1. The Address Line 1 is @company.AddressLine1">Line 1: @company.AddressLine1</p>
+<p aria-label="This field displays the Address Line 2. The Address Line 2 is @company.AddressLine2">Line 2: @company.AddressLine2</p>
+<p aria-label="This field displays the Address Line 3. The Address Line 3 is @company.AddressLine3">Line 3: @company.AddressLine3</p>
+<p aria-label="This field displays the Town. The Town is @company.Town">Town: @company.Town</p>
+<p aria-label="This field displays the County. The County is @company.County">County: @company.County</p>
+<p aria-label="This field displays the Postcode. The Postcode is @company.Postcode">PostCode: @company.Postcode</p>
+
+<p aria-label="This field displays if the company is active." aria-checked="@company.Active">Active: @DisplayIsActive()</p>
+
+@code {
+    [Parameter]
+    public int companyID { get; set; }
+
+    private DataAccessLibrary.Data.Company company { get; set; } = new DataAccessLibrary.Data.Company();
+
+    protected override async Task OnInitializedAsync() => company = await _Company.RetrieveByID(companyID);
+
+    protected override bool ShouldRender() => true;
+
+    private bool IsButtonEnabled(int MainID, int RecordID, bool isEnoughRecords = true) => MainID == RecordID || isEnoughRecords;
+
+    //Company
+    #region Company
+    private void btnBack_OnClick() => NavigationManager.NavigateTo("/companies");
+
+    private void btnEdit_OnClick(int CompanyID) => NavigationManager.NavigateTo($"/companies/edit/{CompanyID}");
+
+    private async void btnDelete_OnClick(int CompanyID)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete this company?"))
+            return;
+
+        await _Company.Delete(CompanyID);
+        NavigationManager.NavigateTo("/companies");
+    }
+    #endregion
+
+    private string DisplayIsActive() => company.Active ? "Yes" : "No";
+}

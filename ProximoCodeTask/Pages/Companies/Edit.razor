@@ -1,0 +1,56 @@
+﻿@page "/companies/edit/{companyID:int}"
+
+@using DataAccessLibrary.Business
+
+@inject ICompany _Company
+@inject NavigationManager NavigationManager
+
+<PageTitle>Edit Company</PageTitle>
+
+<button aria-label="Click this button to go back to the previous page" id="btnBack" class="btn btn-primary" onclick="@btnBack_OnClick"><span class="oi oi-arrow-left" aria-hidden="true"></span> Back</button>
+<h3>Edit Company</h3>
+
+<EditForm Model="@newCompany" OnValidSubmit="@UpdateCompany">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>Name: <InputText aria-label="This field is used to edit the Company Name" id="txtCompanyName" @bind-Value="newCompany.Name" placeholder="Company Name" /></p>
+    <p>Phone Number: <InputText aria-label="This field is used to edit the Company Phone Number" id="txtCompanyPhoneNumber" @bind-Value="newCompany.PhoneNumber" /></p>
+    <p>Email Address: <InputText aria-label="This field is used to edit the Company Email Address" id="txtCompanyEmailAddress" @bind-Value="newCompany.EmailAddress" /></p>
+
+    <p> Address Line 1: <InputText aria-label="This field is used to edit the Company Address Line 1" id="txtCompanyAddress" @bind-Value="newCompany.AddressLine1" placeholder="Address Line 1" /></p>
+    <p> Address Line 2: <InputText aria-label="This field is used to edit the Company Address Line 2" @bind-Value="newCompany.AddressLine2" placeholder="Address Line 2" /></p>
+    <p> Address Line 3: <InputText aria-label="This field is used to edit the Company Address Line 3" @bind-Value="newCompany.AddressLine3" placeholder="Address Line 3" /></p>
+    <p> Town: <InputText aria-label="This field is used to edit the Company Town" @bind-Value="newCompany.Town" placeholder="Town" /></p>
+    <p> County: <InputText aria-label="This field is used to edit the Company County"@bind-Value="newCompany.County" placeholder="County" /></p>
+    <p> Postcode: <InputText aria-label="This field is used to edit the Company Postcode" @bind-Value="newCompany.Postcode" placeholder="Postcode" /></p>
+
+    <p aria-label="This field displays if the company is active."> Active: <InputCheckbox aria-checked="@newCompany.Active" @bind-Value="newCompany.Active" placeholder="Active" /></p>
+
+    <br />
+    <br />
+    <button aria-label="Click this button to submit the form" type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int companyID { get; set; }
+
+    private Models.CompanyDisplayModel newCompany { get; set; } = new Models.CompanyDisplayModel();
+
+    private DataAccessLibrary.Data.Company company { get; set; } = new DataAccessLibrary.Data.Company();
+
+    protected override async Task OnInitializedAsync()
+    {
+        newCompany = new Models.CompanyDisplayModel(await _Company.RetrieveByID(companyID));
+    }
+
+    private async Task UpdateCompany()
+    {
+        _Company.Update(newCompany.ToDataModel());
+
+        NavigationManager.NavigateTo("/companies");
+    }
+
+    private void btnBack_OnClick() => NavigationManager.NavigateTo("/companies");
+}

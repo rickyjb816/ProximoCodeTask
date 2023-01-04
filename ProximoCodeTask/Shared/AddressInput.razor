@@ -1,0 +1,20 @@
+﻿<h4>Address</h4>
+
+<p> Address Line 1: <InputText @bind-Value="Address.AddressLine1" @onfocusout="AddressFocusOut" @onsubmit="AddressSubmited" placeholder="Address Line 1"/></p>
+<p> Address Line 2: <InputText @bind-Value="Address.AddressLine2" @onfocusout="AddressFocusOut" placeholder="Address Line 2"/></p>
+<p> Address Line 3: <InputText @bind-Value="Address.AddressLine3" @onfocusout="AddressFocusOut" placeholder="Address Line 3"/></p>
+<p> Town: <InputText @bind-Value="Address.Town" @onfocusout="AddressFocusOut" placeholder="Town"/></p>
+<p> County: <InputText @bind-Value="Address.County" @onfocusout="AddressFocusOut" placeholder="County"/></p>
+<p> Postcode: <InputText @bind-Value="Address.Postcode" @onfocusout="AddressFocusOut" placeholder="Postcode"/></p>
+
+@code {
+    [Parameter]
+    public DataAccessLibrary.Data.Address Address { get; set; }
+
+    [Parameter]
+    public EventCallback<DataAccessLibrary.Data.Address> AddressChanged { get; set; }
+
+    private async Task AddressFocusOut(FocusEventArgs args) => await AddressChanged.InvokeAsync(Address);
+
+    private async Task AddressSubmited(EventArgs args) => await AddressChanged.InvokeAsync(Address);
+}

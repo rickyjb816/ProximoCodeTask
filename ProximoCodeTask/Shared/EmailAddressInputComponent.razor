@@ -1,0 +1,43 @@
+﻿
+<InputText @bind-Value="Name" @oninput="OnInputName" placeholder="Name"/>
+<InputText @bind-Value="Address" @oninput="OnInputAddress" placeholder="Email Address"/>
+<button class="btn btn-primary" type="button" onclick="@btnConfirm_OnClick" hidden="@hidden"><span class="oi oi-check" aria-hidden="true"></span></button>
+
+@code {
+
+    string Name { get; set; }
+
+    string Address { get; set; }
+
+    bool hidden { get; set; } = true;
+
+    [Parameter]
+    public List<DataAccessLibrary.Data.EmailAddress> Addresses{ get; set; }
+
+    [Parameter]
+    public EventCallback<List<DataAccessLibrary.Data.EmailAddress>> AddressesChanged { get; set; }
+
+    [Parameter]
+    public int index { get; set; }
+
+    [Parameter]
+    public EventCallback<int> indexChanged { get; set; }
+
+    protected override void OnInitialized() 
+    {
+        Name = Addresses[index].Name;
+        Address = Addresses[index].Address;
+    }
+
+    private async Task btnConfirm_OnClick()
+    {
+        Addresses[index].Name = Name;
+        Addresses[index].Address = Address;
+        await AddressesChanged.InvokeAsync(Addresses);
+        hidden = true;
+    }
+
+    private void OnInputName(ChangeEventArgs e) => hidden = e.Value.ToString() == Addresses[index].Name;
+
+    private void OnInputAddress(ChangeEventArgs e) => hidden = e.Value.ToString() == Addresses[index].Address;
+}

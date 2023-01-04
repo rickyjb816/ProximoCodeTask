@@ -1,0 +1,85 @@
+﻿@page "/companies"
+
+@using DataAccessLibrary.Business
+
+@inject NavigationManager NavigationManager
+@inject ICompany _Company
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Companies</PageTitle>
+
+
+<h3>Companies</h3>
+
+
+<br />
+<button aria-label="Click this button to add a new company" id="btnAdd" class="btn btn-primary" onclick="@btnAdd_OnClick">Add New Company</button>
+<br />
+<br />
+<span>
+    <button aria-label="Click this button to view the next page" id="btnDecreasePage" class="btn btn-primary" disabled="@(ShouldEnablePagingButton(0, PageCount))" onclick="@btnDecreasePage_OnClick">Previous</button>
+    Page: @(PageCount+1) / @(calculateTotalPageCount()+1)
+    <button aria-label="Click this button to view the previous page" id="btnIncreasePage" class="btn btn-primary" disabled="@(ShouldEnablePagingButton(calculateTotalPageCount(), PageCount))" onclick="@btnIncreasePage_OnClick">Next</button>
+</span>
+
+<GenericList items="companies" HideTotalItems=false>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Company ID</th>
+                <th>Company Name</th>
+                <th>Last Updated Date</th>
+                <th>Last Updated By</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var company in companies.Skip(PageCount * RecordsPerPage).Take(RecordsPerPage))
+            {
+                <tr>
+                    <td aria-label="This field displays the Company ID. The ID is @company.ID">@company.ID</td>
+                    <td aria-label="This field displays the Company Name. The Name is @company.Name">@company.Name</td>
+                    <td aria-label="This field displays when this company was last updated. It was last updated on @company.UpdatedDate">@company.UpdatedDate</td>
+                    <td aria-label="This field displays who last updated the company. It was last updated by @company.UpdatedBy">@company.UpdatedBy</td>
+                    <td>
+                        <button aria-label="Click this button to view the company" class="btn btn-primary" onclick="@(() => btnView_OnClick(company.ID))">View</button>
+                        <button aria-label="Click this button to Edit the company" class="btn btn-primary" onclick="@(() => btnEdit_OnClick(company.ID))">Edit</button>
+                        <button aria-label="Click this button to Delete the company" class="btn btn-primary red" onclick="@(() => btnDelete_OnClick(company.ID))">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</GenericList>
+
+@code {
+    private IEnumerable<DataAccessLibrary.Data.Company> companies { get; set; } = Enumerable.Empty<DataAccessLibrary.Data.Company>();
+    private int RecordsPerPage { get; set; } = 5;
+    private int PageCount { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync() => companies = await _Company.RetrieveAll();
+
+    private void btnIncreasePage_OnClick() => PageCount = Math.Clamp(PageCount + 1, 0, calculateTotalPageCount());
+
+    private void btnDecreasePage_OnClick() => PageCount = Math.Clamp(PageCount - 1, 0, calculateTotalPageCount());
+
+    private void btnAdd_OnClick() => NavigationManager.NavigateTo("/companies/add");
+
+    private void btnEdit_OnClick(int CompanyID) => NavigationManager.NavigateTo($"/companies/edit/{CompanyID}");
+
+    private void btnView_OnClick(int CompanyID) => NavigationManager.NavigateTo($"/companies/view/{CompanyID}");
+
+    private async void btnDelete_OnClick(int CompanyID)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the Company?"))
+            return;
+
+        await _Company.Delete(CompanyID);
+        companies = await _Company.RetrieveAll();
+        StateHasChanged();
+    }
+
+    private int calculateTotalPageCount() => (int)(Math.Ceiling(decimal.Divide(companies.Count(), RecordsPerPage))) - 1;
+
+    private bool ShouldEnablePagingButton(int Limit, int CurrentPage) => CurrentPage == Limit;
+}
