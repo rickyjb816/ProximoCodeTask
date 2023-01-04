@@ -17,9 +17,9 @@ I initially planned to add functionality to allow for multiple Phone Numbers and
 
 # Next Steps / things to discuss with the client / Things I’d want to improve or add
 
-- add a notes section to document things like when a client was called, duration of call, general notes about contact / company, etc
+- Add a notes section to document things like when a client was called, duration of call, general notes about contact / company, etc
 - Add search
-- add in authentication (probably use Azure's Active Directory)
+- Add in authentication (probably use Azure's Active Directory)
 - Better Design of pages
 - More Validation of fields
 - Standardise components and codebase where possible
