@@ -15,51 +15,19 @@ namespace DataAccessLibrary.Business
 
         public Company(ISQLDataAccess db) => _db = db;
 
-        public void Insert(Data.Company company)
+        public Task Insert(Data.Company company)
         {
-            using (IDbConnection connection = new SqlConnection(_db.getConnectionString()))
-            {
-                var parameters = new
-                {
-                    pvc_Name = company.Name,
-                    pvc_PhoneNumber = company.PhoneNumber,
-                    pvc_EmailAddress = company.EmailAddress,
-                    pvc_AddressLine1 = company.AddressLine1,
-                    pvc_AddressLine2 = company.AddressLine2,
-                    pvc_AddressLine3 = company.AddressLine3,
-                    pvc_Town = company.Town,
-                    pvc_County = company.County,
-                    pvc_Postcode = company.Postcode,
-                    pb_Active = company.Active,
-                    pvc_InsertedBy = company.CreatedBy
-                };
+            string sql = "[dbo].[pc_Companies_Insert] @Name, @PhoneNumber, @EmailAddress, @AddressLine1, @AddressLine2, @AddressLine3, @Town, @County, @Postcode, @Active, @CreatedBy";
 
-                connection.Execute("[dbo].[pc_Companies_Insert]", parameters, commandType: CommandType.StoredProcedure);
-            }
+            return _db.SaveData(sql, company);
         }
 
-        public void Update(Data.Company company)
+        public Task Update(Data.Company company)
         {
-            using (IDbConnection connection = new SqlConnection(_db.getConnectionString()))
-            {
-                var parameters = new
-                {
-                    pi_CompanyID = company.ID,
-                    pvc_Name = company.Name,
-                    pvc_PhoneNumber = company.PhoneNumber,
-                    pvc_EmailAddress = company.EmailAddress,
-                    pvc_AddressLine1 = company.AddressLine1,
-                    pvc_AddressLine2 = company.AddressLine2,
-                    pvc_AddressLine3 = company.AddressLine3,
-                    pvc_Town = company.Town,
-                    pvc_County = company.County,
-                    pvc_Postcode = company.Postcode,
-                    pb_Active = company.Active,
-                    pvc_UpdatedBy = company.UpdatedBy
-                };
 
-                connection.Execute("[dbo].[pc_Companies_Update]", parameters, commandType: CommandType.StoredProcedure);
-            }
+            string sql = "[dbo].[pc_Companies_Update] @ID, @Name, @PhoneNumber, @EmailAddress, @AddressLine1, @AddressLine2, @AddressLine3, @Town, @County, @Postcode, @Active, @UpdatedBy";
+
+            return _db.SaveData(sql, company);
         }
 
 

@@ -38,8 +38,6 @@
 
     private Models.CompanyDisplayModel newCompany { get; set; } = new Models.CompanyDisplayModel();
 
-    private DataAccessLibrary.Data.Company company { get; set; } = new DataAccessLibrary.Data.Company();
-
     protected override async Task OnInitializedAsync()
     {
         newCompany = new Models.CompanyDisplayModel(await _Company.RetrieveByID(companyID));
